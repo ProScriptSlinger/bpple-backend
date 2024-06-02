@@ -20,7 +20,12 @@ const sendFriendRequest = async (req, res) => {
     ];
 
     // Find the recipient user by username
-    const recipient = await User.find(query);
+    const recipient = await User.findOne(query).select([
+      "username",
+      "email",
+      "avatar",
+      "user_id",
+    ]);
 
     if (!recipient) {
       return res.status(404).json({ error: "Recipient not found" });
@@ -36,7 +41,18 @@ const sendFriendRequest = async (req, res) => {
       );
       return res.status(400).json({ error: "Request has been sent" });
     }
+
+    console.log("Recipient Request ------> ", recipient);
+
     // Create the friend request with correct ObjectId references
+    console.log("Creating Request --------> ", {
+      sender: sender._id,
+      recipient: recipient._id,
+      senderId: sender.user_id,
+      recipientId: recipient.user_id,
+      requestId: `${senderId}${recipient.user_id}`,
+      at: at.toString(),
+    });
     await FriendRequest.create({
       sender: sender._id,
       recipient: recipient._id,
