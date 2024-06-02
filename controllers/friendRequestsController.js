@@ -20,12 +20,7 @@ const sendFriendRequest = async (req, res) => {
     ];
 
     // Find the recipient user by username
-    const recipient = await User.find(query).select([
-      "username",
-      "email",
-      "avatar",
-      "user_id",
-    ]);
+    const recipient = await User.find(query);
 
     if (!recipient) {
       return res.status(404).json({ error: "Recipient not found" });
