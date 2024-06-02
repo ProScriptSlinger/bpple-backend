@@ -24,6 +24,7 @@ const getChat = async (req, res) => {
 
 const sendMessage = async (req, res) => {
   const { message } = req.body;
+  console.log("message -------->", message);
   try {
     const chat = await DmMessage.create(message);
 

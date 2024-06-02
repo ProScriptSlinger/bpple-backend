@@ -4,6 +4,7 @@ const { startChatWithUser } = require("../utils/chats");
 
 const sendFriendRequest = async (req, res) => {
   const { senderId, username } = req.params;
+  const query = {};
   try {
     const at = new Date();
     // Find the sender user by user_id
@@ -13,8 +14,18 @@ const sendFriendRequest = async (req, res) => {
       return res.status(404).json({ error: "Sender not found" });
     }
 
+    query["$or"] = [
+      { username: { $regex: new RegExp(username, "i") } },
+      { email: { $regex: new RegExp(username, "i") } },
+    ];
+
     // Find the recipient user by username
-    const recipient = await User.findOne({ username });
+    const recipient = await User.find(query).select([
+      "username",
+      "email",
+      "avatar",
+      "user_id",
+    ]);
 
     if (!recipient) {
       return res.status(404).json({ error: "Recipient not found" });
