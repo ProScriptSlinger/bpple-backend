@@ -77,7 +77,12 @@ const signin = async (req, res) => {
   const { email, password } = req.body;
   try {
     // Check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select([
+      "user_id",
+      "username",
+      "email",
+      "address",
+    ]);
     if (!user) {
       return res.status(400).json({ message: "can not find user" });
     }

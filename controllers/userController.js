@@ -62,12 +62,23 @@ const getUserByAddress = async (req, res) => {
   const { address } = req.params;
   try {
     const user = await User.findOne({ address }).populate("groups.groupId");
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    // Generate JWT token
+    const token = jwt.sign(
+      {
+        user: {
+          user_id: user.user_id,
+          username: user.username,
+          email: user.email,
+          address: user.address,
+        },
+      },
+      process.env.JWT_SECRET
+    );
 
-    res.status(200).json(user);
+    res.status(200).json({ user: user, token: token });
   } catch (error) {
     console.error("Error verifying JWT:", error);
     res.status(500).json({ error: "Error verifying JWT" });
