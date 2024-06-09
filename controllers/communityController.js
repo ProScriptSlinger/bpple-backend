@@ -205,6 +205,24 @@ const joinCommunity = async (req, res) => {
   }
 };
 
+// Controller to update NFTS of a community
+const updateNFTs = async (req, res) => {
+  const { communityId } = req.params;
+  const { nfts } = req.body;
+  console.log("updateNFTs ------->", communityId, nfts);
+  try {
+    const community = await Community.findByIdAndUpdate(communityId, {
+      nfts: nfts,
+    });
+    if (!community) {
+      return res.status(404).json({ error: "community not found" });
+    }
+    res.status(200).json({ ...community, ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const getChannels = async (req, res) => {
   const { communityId } = req.params;
   try {
@@ -229,4 +247,5 @@ module.exports = {
   getUserCommunities,
   createChannel,
   getChannelMessages,
+  updateNFTs,
 };

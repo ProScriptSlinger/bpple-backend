@@ -4,8 +4,12 @@ const Schema = mongoose.Schema;
 const communitieschema = new Schema({
   name: { type: String, required: true },
   invitationLink: { type: String },
-  avatar: { type: String},
+  avatar: { type: String },
   description: { type: String },
+  nfts: {
+    type: [String],
+    default: [],
+  },
   members: {
     type: Map,
     of: {
