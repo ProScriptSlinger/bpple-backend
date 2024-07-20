@@ -62,6 +62,7 @@ const getUserByAddress = async (req, res) => {
   const { address } = req.params;
   try {
     const user = await User.findOne({ address }).populate("groups.groupId");
+    console.log("User found by address ------>", user);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

@@ -36,9 +36,6 @@ const sendFriendRequest = async (req, res) => {
     });
 
     if (friendReq) {
-      console.log(
-        `   return res.status(400).json({ error: "Request has been sent" });`
-      );
       return res.status(400).json({ error: "Request has been sent" });
     }
 
@@ -46,14 +43,6 @@ const sendFriendRequest = async (req, res) => {
 
     // Create the friend request with correct ObjectId references
     console.log("Creating Request --------> ", {
-      sender: sender._id,
-      recipient: recipient._id,
-      senderId: sender.user_id,
-      recipientId: recipient.user_id,
-      requestId: `${senderId}${recipient.user_id}`,
-      at: at.toString(),
-    });
-    await FriendRequest.create({
       sender: sender._id,
       recipient: recipient._id,
       senderId: sender.user_id,

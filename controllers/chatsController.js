@@ -1,5 +1,7 @@
 const Chat = require("../models/Chat");
 const DmMessage = require("../models/DmMessage");
+const User = require("../models/User");
+const { startChatWithUser } = require("../utils/chats");
 
 const getChat = async (req, res) => {
   const { user_id } = req.params;
@@ -50,8 +52,31 @@ const getMessageByDnId = async (req, res) => {
   }
 };
 
+const addChatByID = async (req, res) => {
+  const { requestId } = req.params;
+  console.log("add chart ------>", requestId);
+  const ids = requestId.split("-");
+  try {
+    const sender = await User.findById(ids[0]);
+    const recipient = await User.findById(ids[1]);
+    const dm_messages_id = await startChatWithUser(
+      requestId,
+      recipient,
+      sender
+    );
+    console.log("dm message id", dm_messages_id);
+    res.status(200).json({ dmID: dm_messages_id, msg: "Chat added" });
+  } catch (error) {
+    console.error("Error adding chat by ID:", error);
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", msg: error.message });
+  }
+};
+
 module.exports = {
   getChat,
   sendMessage,
   getMessageByDnId,
+  addChatByID,
 };
