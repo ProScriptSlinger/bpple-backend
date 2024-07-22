@@ -135,6 +135,24 @@ const getUserCommunities = async (req, res) => {
   }
 };
 
+const fetchNewCommunities = async (req, res) => {
+  try {
+    const communities = await Community.find()
+      .sort({ createdAt: -1 })
+      .limit(10);
+    console.log("new communities ----->", communities);
+    if (!communities || communities.length === 0) {
+      return res
+        .status(204)
+        .json({ message: "No communities found for this user." });
+    }
+    res.status(200).json(communities);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 const getCommunityMessages = async (req, res) => {
   const { communityId } = req.params;
   try {
@@ -248,4 +266,5 @@ module.exports = {
   createChannel,
   getChannelMessages,
   updateNFTs,
+  fetchNewCommunities,
 };

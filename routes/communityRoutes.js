@@ -13,6 +13,7 @@ const {
   createChannel,
   getChannelMessages,
   updateNFTs,
+  fetchNewCommunities,
 } = require("../controllers/communityController");
 
 // Require Auth
@@ -29,5 +30,6 @@ router.post("/:communityId/messages", sendMessage);
 router.get("/:communityId/messages", getCommunityMessages);
 router.put("/:communityId/join/:userId", joinCommunity);
 router.put("/:communityId/update-nfts", updateNFTs);
+router.get("/new-communities", fetchNewCommunities);
 
 module.exports = router;
