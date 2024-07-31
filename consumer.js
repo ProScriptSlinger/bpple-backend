@@ -28,17 +28,17 @@ module.exports = function (io) {
     });
 
     socket.on("friend-start-chat", (data) => {
-      if (data.sender.user_id !== user_id) {
-        console.log("Received chat:", data.sender.user_id);
+      if (data.senderId !== user_id) {
+        console.log("friend-start-chat:", data.senderId);
 
         // Join the sender's room
-        socket.join(data.sender.user_id);
+        socket.join(data.senderId);
 
         // Emit the message to the sender's room
-        socket.to(data.sender.user_id).emit("new-chat-received", data);
+        socket.to(data.senderId).emit("new-chat-received", data);
 
         // Leave the sender's room after emitting the message
-        socket.leave(data.sender.user_id);
+        socket.leave(data.senderId);
       }
     });
 

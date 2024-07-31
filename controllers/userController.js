@@ -64,7 +64,7 @@ const getUserByAddress = async (req, res) => {
     const user = await User.findOne({ address }).populate("groups.groupId");
     console.log("User found by address ------>", user);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(204).json({ message: "User not found" });
     }
     // Generate JWT token
     const token = jwt.sign(
